@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %} Sales System {% endblock %}
+{% block content %}
+<style>
+    body {
+        background: url('/static/pic10.jpeg') no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="flash-messages">
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+<h1 style="color: white;">
+    <center>SALES PAGE <div class="shake"><i class="fa-solid fa-hand-holding-dollar" style="color: #078aed;"></i></div>
+    </center>
+</h1>
+
+<!-- Button to trigger modal -->
+<div class="container" style="text-align: center;">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">
+        <div class="animate__animated animate__bounce animate__infinite">
+            <h5>Make Sales</h5>
+        </div>
+    </button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productModalLabel">Make sales</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('add_sales_route') }}" method="POST">
+                    <div class="mb-3">
+                        <label for="productName" class="form-label">Product Name</label>
+                        <select class="form-select" id="productname" name="product_id" required>
+                            <option selected disabled>Product</option>
+                            {% for product in products %}
+                                <option value="{{ product[0] }}">{{ product[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantity</label>
+                        <input type="number" class="form-control" id="quantity" name="quantity" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">ADD</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table id="myTable" class="display" style="color: white;">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Product_id</th>
+            <th scope="col">Product_name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Created_at</th>
+        </tr>
+    </thead>
+    <tbody style="color: white;">
+        {% for sale in mysales %}
+            <tr>
+                <td>{{ sale[0] }}</td>
+                <td>{{ sale[1] }}</td>
+                <td>{{ sale[2] }}</td>
+                <td>{{ sale[3] }}</td>
+                <td>{{ sale[4] }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script>
+    // Function to hide flash messages after 3 seconds
+    setTimeout(function() {
+        var flashMessages = document.querySelector('.flash-messages');
+        if (flashMessages) {
+            flashMessages.style.display = 'none';
+        }
+    }, 3000); // 3000 milliseconds = 3 seconds
+  </script>
+{% endblock %}

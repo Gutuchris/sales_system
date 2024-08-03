@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Products - Sales System{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background: url('/static/pic6.jpeg') no-repeat center center fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: fixed;
+  }
+</style>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="flash-messages">
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+<div class="container" style="text-align: center;">
+  <h1 style="color: white;"><em>PRODUCTS PAGE</em>
+    <div class="shake"><i class="fa-solid fa-cart-shopping fa-sm" style="color: #f4511a;"></i></div>
+  </h1>
+</div>
+
+<!-- Button to trigger modal -->
+<div class="container" style="text-align: center;">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">
+    <div class="animate__animated animate__bounce animate__infinite">
+      <h5>
+        Add Product
+      </h5>
+    </div>
+
+  </button>
+</div>
+
+<!-- Modal -->
+
+<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="productModalLabel">Add Product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/add_products" method="POST">
+          <div class="mb-3">
+            <label for="productName" class="form-label">Product Name</label>
+            <input type="text" class="form-control" id="productName" name="product_name" required>
+          </div>
+          <div class="mb-3">
+            <label for="buyingPrice" class="form-label">Buying Price</label>
+            <input type="number" class="form-control" id="buyingPrice" name="buying_price" required>
+          </div>
+          <div class="mb-3">
+            <label for="sellingPrice" class="form-label">Selling Price</label>
+            <input type="number" class="form-control" id="sellingPrice" name="selling_price" required>
+          </div>
+          <div class="mb-3">
+            <label for="stockQuantity" class="form-label">Stock Quantity</label>
+            <input type="number" class="form-control" id="stockQuantity" name="stock_quantity" required>
+          </div>
+          <button type="submit" class="btn btn-primary">ADD</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table id="myTable" class="display" style="color: white;">
+  <thead style="color: azure;">
+    <tr style="color: white;">
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Buying Price</th>
+      <th scope="col">Selling Price</th>
+      <th scope="col">Stock Quantity</th>
+    </tr>
+  </thead>
+  <tbody style="color: white;">
+    {% for product in myproducts %}
+    <tr>
+      <td>{{ product[0] }}</td>
+      <td>{{ product[1] }}</td>
+      <td>{{ product[2] }}</td>
+      <td>{{ product[3] }}</td>
+      <td>{{ product[4] }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<script>
+  // Function to hide flash messages after 3 seconds
+  setTimeout(function() {
+      var flashMessages = document.querySelector('.flash-messages');
+      if (flashMessages) {
+          flashMessages.style.display = 'none';
+      }
+  }, 3000); // 3000 milliseconds = 3 seconds
+</script>
+{% endblock %}
